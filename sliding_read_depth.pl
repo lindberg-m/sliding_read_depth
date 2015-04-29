@@ -241,9 +241,8 @@ $data_handler{'output'}->( \%data, \%data_buffer );
 $total{'prev_chr'} = 'TOTAL';
 if ($opts{f}) {
     $data_handler{'close'}->();
+    $data_handler{'output'}->( \%data, \%data_buffer );
 }
-$data_handler{'output'}->( \%total, undef, 1 );
-
 
 #####=========#####
 #
