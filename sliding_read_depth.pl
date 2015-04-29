@@ -131,7 +131,7 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
        $_count  = $buff->{'count'};
      }
      
-     my $msg = "$data->{'prev_chr'}\t$_count\t" . mean_format($_dep, $_nuc);
+     my $msg = "$data->{'prev_chr'}\t$buff->{'pos'}\t$data->{'pos'}\t$_count\t" . mean_format($_dep, $_nuc);
      if ( $data_handler{'coverage'} ) {
        $msg .= "\t$_nuc";
        $msg .= "\t$_pos";
@@ -274,11 +274,13 @@ sub usage
 
   Output (Column 4 & 5 included only with opt '--coverage'):
    Column 1: Name of chromosome/scaffold
-   Column 2: Window number within chromosome/scaffold ('TOTAL' is the entire
+   Column 2: Position of window start
+   Column 3: Position of window end
+   Column 4: Window number within chromosome/scaffold ('TOTAL' is the entire
              chromosome/scaffold)
-   Column 3: Read depth
-   Column 4: Number of covered nucleotides
-   Column 5: Number of total nucleotides
+   Column 5: Read depth
+   Column 6: Number of covered nucleotides
+   Column 7: Number of total nucleotides
 
    Options:
     -h --help               Show this help and exit
@@ -289,7 +291,7 @@ sub usage
     -f --splitfile          Put results from each chromosome/scaffold into 
                             different files named <chr>_<file.bam>.depth
                             warning: many scaffolds == many files
-    --coverage              Show column 4 & 5
+    --coverage              Show column 5 & 6
 
 By: Markus Lindberg, markus.lindberg89\@gmail.com\n";
   exit;
