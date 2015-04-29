@@ -29,6 +29,7 @@ use strict;
 use warnings;
 use utf8;
 use Getopt::Long;
+use File::Basename;
 
 if (scalar @ARGV < 1 ) { usage() };
 
@@ -87,6 +88,7 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
   'open' => sub {
     my $chr  = shift;
     my $name = shift;
+    $name = basename($name);
     open (my $FH, '>', "${chr}_${name}.depth") or die 
         "Cannot open ${chr}_${name}.depth for writing: $!\n";
 
