@@ -123,7 +123,7 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
        $_nuc   = $data->{'nuc'};
        $_pos   = $data->{'pos'};
        $_dep   = $data->{'dep'};
-       $_count = 'TOTAL';
+       $_count = $data->{'count'};
 
      } else {
 
@@ -216,8 +216,9 @@ while (my $line = <$CMD>) {
 
     } else {
 
-        $data_handler{'output'}->( \%data, undef, 1 );
+      # $data_handler{'output'}->( \%data, undef, 1 );
         $data_handler{'flush'}->( \%data_buffer );
+        $data_handler{'output'}->( \%data, \%data_buffer, 1 );
 
         $total{'dep'} += $data{'dep'};
         $total{'nuc'} += $data{'nuc'};
