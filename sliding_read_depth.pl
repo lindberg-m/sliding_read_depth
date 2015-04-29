@@ -123,7 +123,7 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
        $_nuc   = $data->{'nuc'};
        $_pos   = $data->{'pos'};
        $_dep   = $data->{'dep'};
-       $_count = $data->{'count'};
+       $_count = $buff->{'count'};
 
      } else {
 
