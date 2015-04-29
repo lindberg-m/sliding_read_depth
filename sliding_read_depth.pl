@@ -22,7 +22,6 @@
 # ORGANIZATION: 
 #      VERSION: 1.1
 #      CREATED: 19/03/2015 19:27:30 
-#     REVISION: 25/03/2015 13:50:08
 #===============================================================================
 
 use strict;
@@ -130,7 +129,7 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
        $_nuc    = $data->{'nuc'} - $buff->{'nuc'};
        $_pos    = $data->{'pos'} - $buff->{'pos'};
        $_dep    = $data->{'dep'} - $buff->{'dep'};
-       $_count  = $buff->{'count'};
+       $_count  = 'TOTAL'; 
      }
      
      my $msg = "$data->{'prev_chr'}\t$buff->{'pos'}\t$data->{'pos'}\t$_count\t" . mean_format($_dep, $_nuc);
@@ -261,8 +260,9 @@ sub mean_format
 
 sub usage
 {
+  my $script = basename($0);
   print "
-  Usage: $0 [options] <file.bam>
+  Usage: $script [options] <file.bam>
 
   Takes a _sorted_ bam-file as input and calculate read depth over the 
   chromosomes/scaffolds as they appear in the file. Need samtools in 
