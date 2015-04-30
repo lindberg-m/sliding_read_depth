@@ -247,7 +247,7 @@ if ($opts{f}) {
     $data_handler{'close'}->();
     $data_handler{'output'}->( \%data, \%data_buffer );
 }
-$data_handler{'output'}->( \%total,
+$data_handler{'output'}->( \%total, \%data_buffer, 1);
 
 
 #####=========#####
