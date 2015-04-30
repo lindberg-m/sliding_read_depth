@@ -123,14 +123,14 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
        $_nuc   = $data->{'nuc'};
        $_pos   = $data->{'pos'};
        $_dep   = $data->{'dep'};
-       $_count = $buff->{'count'};
+       $_count  = 'TOTAL'; 
 
      } else {
 
        $_nuc    = $data->{'nuc'} - $buff->{'nuc'};
        $_pos    = $data->{'pos'} - $buff->{'pos'};
        $_dep    = $data->{'dep'} - $buff->{'dep'};
-       $_count  = 'TOTAL'; 
+       $_count = $buff->{'count'};
      }
      
      my $msg = "$data->{'prev_chr'}\t$buff->{'pos'}\t$data->{'pos'}\t$_count\t" . mean_format($_dep, $_nuc);
