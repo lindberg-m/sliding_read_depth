@@ -116,24 +116,27 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
      my $_nuc   = 0;
      my $_pos   = 0;
      my $_dep   = 0;
-     my $_count = '';
-
+     
+     my $msg = "";
      if ( $tot ) {
+
+       $msg = "TOTAL-\t-\tTOTAL\t"; 
 
        $_nuc   = $data->{'nuc'};
        $_pos   = $data->{'pos'};
        $_dep   = $data->{'dep'};
-       $_count  = 'TOTAL'; 
 
      } else {
+
+       $msg .= "$data->{'prev_chr'}\t$buff->{'pos'}\t$data->{'pos'}\t$buff->{'count'}\t";
 
        $_nuc    = $data->{'nuc'} - $buff->{'nuc'};
        $_pos    = $data->{'pos'} - $buff->{'pos'};
        $_dep    = $data->{'dep'} - $buff->{'dep'};
-       $_count = $buff->{'count'};
+
      }
      
-     my $msg = "$data->{'prev_chr'}\t$buff->{'pos'}\t$data->{'pos'}\t$_count\t" . mean_format($_dep, $_nuc);
+     $msg .= mean_format($_dep, $_nuc);
      if ( $data_handler{'coverage'} ) {
        $msg .= "\t$_nuc";
        $msg .= "\t$_pos";
@@ -244,6 +247,8 @@ if ($opts{f}) {
     $data_handler{'close'}->();
     $data_handler{'output'}->( \%data, \%data_buffer );
 }
+$data_handler{'output'}->( \%total,
+
 
 #####=========#####
 #
