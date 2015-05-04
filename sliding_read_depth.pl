@@ -22,13 +22,14 @@
 # ORGANIZATION: 
 #      VERSION: 1.1
 #      CREATED: 19/03/2015 19:27:30 
-#     REVISION: 25/03/2015 13:50:08
+#
 #===============================================================================
 
 use strict;
 use warnings;
 use utf8;
 use Getopt::Long;
+use File::Basename;
 
 if (scalar @ARGV < 1 ) { usage() };
 
@@ -87,6 +88,7 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
   'open' => sub {
     my $chr  = shift;
     my $name = shift;
+    $name = basename($name);
     open (my $FH, '>', "${chr}_${name}.depth") or die 
         "Cannot open ${chr}_${name}.depth for writing: $!\n";
 
@@ -114,24 +116,27 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
      my $_nuc   = 0;
      my $_pos   = 0;
      my $_dep   = 0;
-     my $_count = '';
-
+     
+     my $msg = "";
      if ( $tot ) {
+
+       $msg = "TOTAL-\t-\tTOTAL\t"; 
 
        $_nuc   = $data->{'nuc'};
        $_pos   = $data->{'pos'};
        $_dep   = $data->{'dep'};
-       $_count = 'TOTAL';
 
      } else {
+
+       $msg .= "$data->{'prev_chr'}\t$buff->{'pos'}\t$data->{'pos'}\t$buff->{'count'}\t";
 
        $_nuc    = $data->{'nuc'} - $buff->{'nuc'};
        $_pos    = $data->{'pos'} - $buff->{'pos'};
        $_dep    = $data->{'dep'} - $buff->{'dep'};
-       $_count  = $buff->{'count'};
+
      }
      
-     my $msg = "$data->{'prev_chr'}\t$_count\t" . mean_format($_dep, $_nuc);
+     $msg .= mean_format($_dep, $_nuc);
      if ( $data_handler{'coverage'} ) {
        $msg .= "\t$_nuc";
        $msg .= "\t$_pos";
@@ -214,8 +219,9 @@ while (my $line = <$CMD>) {
 
     } else {
 
-        $data_handler{'output'}->( \%data, undef, 1 );
+      # $data_handler{'output'}->( \%data, undef, 1 );
         $data_handler{'flush'}->( \%data_buffer );
+        $data_handler{'output'}->( \%data, \%data_buffer, 1 );
 
         $total{'dep'} += $data{'dep'};
         $total{'nuc'} += $data{'nuc'};
@@ -239,8 +245,9 @@ $data_handler{'output'}->( \%data, \%data_buffer );
 $total{'prev_chr'} = 'TOTAL';
 if ($opts{f}) {
     $data_handler{'close'}->();
+    $data_handler{'output'}->( \%data, \%data_buffer );
 }
-$data_handler{'output'}->( \%total, undef, 1 );
+$data_handler{'output'}->( \%total, \%data_buffer, 1);
 
 
 #####=========#####
@@ -258,8 +265,9 @@ sub mean_format
 
 sub usage
 {
+  my $script = basename($0);
   print "
-  Usage: $0 [options] <file.bam>
+  Usage: $script [options] <file.bam>
 
   Takes a _sorted_ bam-file as input and calculate read depth over the 
   chromosomes/scaffolds as they appear in the file. Need samtools in 
@@ -274,11 +282,13 @@ sub usage
 
   Output (Column 4 & 5 included only with opt '--coverage'):
    Column 1: Name of chromosome/scaffold
-   Column 2: Window number within chromosome/scaffold ('TOTAL' is the entire
+   Column 2: Position of window start
+   Column 3: Position of window end
+   Column 4: Window number within chromosome/scaffold ('TOTAL' is the entire
              chromosome/scaffold)
-   Column 3: Read depth
-   Column 4: Number of covered nucleotides
-   Column 5: Number of total nucleotides
+   Column 5: Read depth
+   Column 6: Number of covered nucleotides
+   Column 7: Number of total nucleotides
 
    Options:
     -h --help               Show this help and exit
@@ -289,7 +299,7 @@ sub usage
     -f --splitfile          Put results from each chromosome/scaffold into 
                             different files named <chr>_<file.bam>.depth
                             warning: many scaffolds == many files
-    --coverage              Show column 4 & 5
+    --coverage              Show column 5 & 6
 
 By: Markus Lindberg, markus.lindberg89\@gmail.com\n";
   exit;
