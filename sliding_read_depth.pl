@@ -128,7 +128,10 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
 
      } else {
 
-       $msg .= "$data->{'prev_chr'}\t$buff->{'pos'}\t$data->{'pos'}\t$buff->{'count'}\t";
+       my $delta_pos = $data->{'pos'} - $buff->{'pos'};
+       my $midpoint  = int( $buff->{'pos'} + ( $delta_pos / 2 ));
+
+       $msg .= "$data->{'prev_chr'}\t$buff->{'pos'}\t$data->{'pos'}\t$midpoint\t$buff->{'count'}\t";
 
        $_nuc    = $data->{'nuc'} - $buff->{'nuc'};
        $_pos    = $data->{'pos'} - $buff->{'pos'};
@@ -284,11 +287,12 @@ sub usage
    Column 1: Name of chromosome/scaffold
    Column 2: Position of window start
    Column 3: Position of window end
-   Column 4: Window number within chromosome/scaffold ('TOTAL' is the entire
+   Column 4: Mid-position of window
+   Column 5: Window number within chromosome/scaffold ('TOTAL' is the entire
              chromosome/scaffold)
-   Column 5: Read depth
-   Column 6: Number of covered nucleotides
-   Column 7: Number of total nucleotides
+   Column 6: Read depth
+   Column 7: Number of covered nucleotides
+   Column 8: Number of total nucleotides
 
    Options:
     -h --help               Show this help and exit
@@ -299,7 +303,7 @@ sub usage
     -f --splitfile          Put results from each chromosome/scaffold into 
                             different files named <chr>_<file.bam>.depth
                             warning: many scaffolds == many files
-    --coverage              Show column 5 & 6
+    --coverage              Show column 7 & 8
 
 By: Markus Lindberg, markus.lindberg89\@gmail.com\n";
   exit;
