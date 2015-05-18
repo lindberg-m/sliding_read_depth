@@ -120,7 +120,7 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
      my $msg = "";
      if ( $tot ) {
 
-       $msg = "TOTAL-\t-\tTOTAL\t"; 
+       $msg = "$data->{'prev_chrom'}\t-\tTOTAL\t"; 
 
        $_nuc   = $data->{'nuc'};
        $_pos   = $data->{'pos'};
