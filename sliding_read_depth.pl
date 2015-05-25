@@ -120,7 +120,7 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
      my $msg = "";
      if ( $tot ) {
 
-       $msg = "$data->{'prev_chr'}\t-\tTOTAL\t"; 
+       $msg = "$data->{'prev_chr'}\tTOTAL :\t"; 
 
        $_nuc   = $data->{'nuc'};
        $_pos   = $data->{'pos'};
@@ -128,10 +128,11 @@ if ($opts{m} ) { $data_handler{'comp'} = 'nuc'; };
 
      } else {
 
-       my $delta_pos = $data->{'pos'} - $buff->{'pos'};
+       # my $delta_pos = $data->{'pos'} - $buff->{'pos'};
        # my $midpoint  = int( $buff->{'pos'} + ( $delta_pos / 2 ));
 
-       $msg .= "$data->{'prev_chr'}\t$buff->{'pos'}\t$data->{'pos'}\t$buff->{'count'}\t";
+       my $spos = $buff->{'pos'} + 1;
+       $msg .= "$data->{'prev_chr'}\t$buff->{'count'}\t$spos\t$data->{'pos'}\t";
 
        $_nuc    = $data->{'nuc'} - $buff->{'nuc'};
        $_pos    = $data->{'pos'} - $buff->{'pos'};
@@ -253,8 +254,8 @@ $total{'pos'}     += $data{'pos'};
 
 if ($opts{f}) {
     $data_handler{'close'}->();
-    $data_handler{'output'}->( \%data, \%data_buffer );
 }
+$data_handler{'output'}->( \%data, \%data_buffer, 1 );
 $data_handler{'output'}->( \%total, \%data_buffer, 1);
 
 
