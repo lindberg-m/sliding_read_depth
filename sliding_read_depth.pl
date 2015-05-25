@@ -245,7 +245,12 @@ while (my $line = <$CMD>) {
 close $CMD;
 
 $data_handler{'output'}->( \%data, \%data_buffer );
+
 $total{'prev_chr'} = 'TOTAL';
+$total{'dep'}     += $data{'dep'};
+$total{'nuc'}     += $data{'nuc'};
+$total{'pos'}     += $data{'pos'};
+
 if ($opts{f}) {
     $data_handler{'close'}->();
     $data_handler{'output'}->( \%data, \%data_buffer );
